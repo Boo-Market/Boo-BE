@@ -31,4 +31,12 @@ public class WishService {
 
         wishRepository.save(wish);
     }
+    public void removeWish(Long postId) {
+        Long userId = 1L; // 임시 userId
+
+        Wish wish = wishRepository.findByUserIdAndPostId(userId, postId)
+                .orElseThrow(() -> new IllegalArgumentException("관심상품으로 등록되지 않은 게시글입니다."));
+
+        wishRepository.delete(wish);
+    }
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +20,14 @@ public class WishController {
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "message", "관심상품으로 등록되었습니다."
+        ));
+    }
+    @DeleteMapping("/api/wishes/{postId}")
+    public ResponseEntity<?> removeWish(@PathVariable Long postId) {
+        wishService.removeWish(postId);
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "관심상품이 해제되었습니다."
         ));
     }
 }
