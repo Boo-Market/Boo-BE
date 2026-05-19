@@ -6,6 +6,7 @@ import com.mini3team.boo_market.dto.request.PostCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.mini3team.boo_market.dto.response.PostDetailResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -38,5 +39,11 @@ public class PostService {
                 .build();
 
         return postRepository.save(post).getId();
+    }
+    @Transactional(readOnly = true)
+    public PostDetailResponse getPost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+        return new PostDetailResponse(post);
     }
 }
