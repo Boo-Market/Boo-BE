@@ -2,9 +2,13 @@ package com.mini3team.boo_market.domain.wish;
 
 import com.mini3team.boo_market.domain.post.Post;
 import com.mini3team.boo_market.domain.post.PostRepository;
+import com.mini3team.boo_market.dto.response.WishListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,5 +42,14 @@ public class WishService {
                 .orElseThrow(() -> new IllegalArgumentException("관심상품으로 등록되지 않은 게시글입니다."));
 
         wishRepository.delete(wish);
+    }
+    @Transactional(readOnly = true)
+    public List<WishListResponse> getWishList() {
+        Long userId = 1L; // 임시 userId
+
+        return wishRepository.findAllByUserId(userId)
+                .stream()
+                .map(WishListResponse::new)
+                .collect(Collectors.toList());
     }
 }

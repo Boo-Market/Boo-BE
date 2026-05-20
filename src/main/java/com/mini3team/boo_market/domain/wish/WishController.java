@@ -2,11 +2,12 @@ package com.mini3team.boo_market.domain.wish;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Map;
-import org.springframework.web.bind.annotation.DeleteMapping;
+
+import com.mini3team.boo_market.dto.response.WishListResponse;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +29,14 @@ public class WishController {
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "message", "관심상품이 해제되었습니다."
+        ));
+    }
+    @GetMapping("/api/wish_lists")
+    public ResponseEntity<?> getWishList() {
+        List<WishListResponse> response = wishService.getWishList();
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "data", response
         ));
     }
 }
