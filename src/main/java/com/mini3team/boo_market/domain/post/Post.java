@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
+import com.mini3team.boo_market.domain.user.Major;
 @Entity
 @Getter
 @NoArgsConstructor
@@ -34,6 +35,9 @@ public class Post {
     private String endDate;
     private String lenderName;
     private String borrowerName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "major_id")
+    private Major major;
     private Long authorId;
     private boolean isWished;
     private LocalDateTime createdAt;
