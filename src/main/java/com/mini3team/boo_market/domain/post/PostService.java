@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.mini3team.boo_market.dto.response.PostDetailResponse;
+import com.mini3team.boo_market.dto.response.PostListResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor
@@ -45,5 +48,17 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
         return new PostDetailResponse(post);
+    }
+    @Transactional(readOnly = true)
+    public Page<PostListResponse> getPostList(String category, String sort, Pageable pageable) {
+        Page<Post> posts;
+
+        if (category == null || category.equals("전체")) {
+            posts = postRepository.findAll(pageable);
+        } else {
+            posts = postRepository.findByCategory_Name(category, pageable);
+        }
+
+        return posts.map(PostListResponse::new);
     }
 }
