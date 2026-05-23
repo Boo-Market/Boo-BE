@@ -1,0 +1,42 @@
+package com.mini3team.boo_market.domain.post;
+
+import com.mini3team.boo_market.domain.category.Category;
+import com.mini3team.boo_market.domain.category.CategoryRepository;
+import com.mini3team.boo_market.dto.request.PostCreateRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class PostService {
+
+    private final PostRepository postRepository;
+    private final CategoryRepository categoryRepository;
+
+    public Long createPost(PostCreateRequest request) {
+        request.validateRental();
+
+        Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
+
+        Post post = Post.builder()
+                .title(request.getTitle())
+                .category(category)
+                .itemCondition(request.getItemCondition())
+                .price(request.getPrice())
+                .isFree(request.isFree())
+                .tradeLocation(request.getTradeLocation())
+                .contactMethod(request.getContactMethod())
+                .description(request.getDescription())
+                .imageUrls(request.getImageUrls())
+                .startDate(request.getStartDate())
+                .endDate(request.getEndDate())
+                .lenderName(request.getLenderName())
+                .borrowerName(request.getBorrowerName())
+                .build();
+
+        return postRepository.save(post).getId();
+    }
+}
