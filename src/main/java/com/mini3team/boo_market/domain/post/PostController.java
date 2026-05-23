@@ -1,17 +1,16 @@
 package com.mini3team.boo_market.domain.post;
 
 import com.mini3team.boo_market.dto.request.PostCreateRequest;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import java.util.Map;
 import com.mini3team.boo_market.dto.response.PostDetailResponse;
 import com.mini3team.boo_market.dto.response.PostListResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +27,7 @@ public class PostController {
                 "message", "게시글이 등록되었습니다."
         ));
     }
+
     @GetMapping("/api/posts/{postId}")
     public ResponseEntity<?> getPost(@PathVariable Long postId) {
         PostDetailResponse response = postService.getPost(postId);
@@ -36,6 +36,7 @@ public class PostController {
                 "data", response
         ));
     }
+
     @GetMapping("/api/posts")
     public ResponseEntity<?> getPostList(
             @RequestParam(required = false, defaultValue = "전체") String category,

@@ -3,13 +3,13 @@ package com.mini3team.boo_market.domain.post;
 import com.mini3team.boo_market.domain.category.Category;
 import com.mini3team.boo_market.domain.category.CategoryRepository;
 import com.mini3team.boo_market.dto.request.PostCreateRequest;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.mini3team.boo_market.dto.response.PostDetailResponse;
 import com.mini3team.boo_market.dto.response.PostListResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,12 +43,14 @@ public class PostService {
 
         return postRepository.save(post).getId();
     }
+
     @Transactional(readOnly = true)
     public PostDetailResponse getPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
         return new PostDetailResponse(post);
     }
+
     @Transactional(readOnly = true)
     public Page<PostListResponse> getPostList(String category, String sort, Pageable pageable) {
         Page<Post> posts;
