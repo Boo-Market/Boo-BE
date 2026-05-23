@@ -3,6 +3,8 @@ package com.mini3team.boo_market.domain.user;
 import com.mini3team.boo_market.common.exception.ApiException;
 import com.mini3team.boo_market.domain.goods.Goods;
 import com.mini3team.boo_market.domain.goods.GoodsRepository;
+import com.mini3team.boo_market.domain.post.Post;
+import com.mini3team.boo_market.domain.post.PostRepository;
 import com.mini3team.boo_market.domain.report.Report;
 import com.mini3team.boo_market.domain.report.ReportRepository;
 import com.mini3team.boo_market.domain.wishlist.WishListRepository;
@@ -26,6 +28,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final MajorRepository majorRepository;
     private final GoodsRepository goodsRepository;
+    private final PostRepository postRepository;
     private final WishListRepository wishListRepository;
     private final ReportRepository reportRepository;
     private final PasswordEncoder passwordEncoder;
@@ -95,10 +98,10 @@ public class UserService {
     public void report(Long reporterId, ReportRequest request) {
         User reporter = getUser(reporterId);
         User targetUser = getUser(request.targetUserId());
-        Goods goods = request.goodsId() == null ? null : goodsRepository.findById(request.goodsId())
-                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "goods_id", "게시글을 찾을 수 없습니다."));
+        Post post = request.postId() == null ? null : postRepository.findById(request.postId())
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "post_id", "게시글을 찾을 수 없습니다."));
 
-        reportRepository.save(new Report(reporter, targetUser, goods, request.reason()));
+        reportRepository.save(new Report(reporter, targetUser, post, request.reason()));
     }
 
     public void withdraw(Long userId) {

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record ReportRequest(
         @JsonProperty("target_user_id") @NotNull Long targetUserId,
-        @JsonProperty("goods_id") Long goodsId,
+        @JsonProperty("post_id") Long postId,
         @NotBlank String reason
 ) {
 }

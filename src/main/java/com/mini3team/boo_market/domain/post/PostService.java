@@ -44,10 +44,10 @@ public class PostService {
         return postRepository.save(post).getId();
     }
 
-    @Transactional(readOnly = true)
     public PostDetailResponse getPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+        post.incrementViewCount();
         return new PostDetailResponse(post);
     }
 

@@ -45,6 +45,13 @@ public class Post {
     private boolean isWished;
     private LocalDateTime createdAt;
 
+    @Column(columnDefinition = "INT DEFAULT 0")
+    private int viewCount;
+
+    public void incrementViewCount() {
+        this.viewCount++;
+    }
+
     @Builder
     public Post(String title, Category category, int itemCondition,
                 int price, boolean isFree, String tradeLocation,
