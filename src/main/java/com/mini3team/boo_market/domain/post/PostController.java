@@ -42,7 +42,8 @@ public class PostController {
             @RequestParam(required = false, defaultValue = "전체") String category,
             @RequestParam(required = false, defaultValue = "latest") String sort,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) Integer majorId) {
 
         Sort sorting;
         if (sort.equals("low_price")) {
@@ -52,7 +53,7 @@ public class PostController {
         }
 
         Pageable pageable = PageRequest.of(page, size, sorting);
-        Page<PostListResponse> response = postService.getPostList(category, sort, pageable);
+        Page<PostListResponse> response = postService.getPostList(category, sort, majorId, pageable);
 
         return ResponseEntity.ok(Map.of(
                 "success", true,

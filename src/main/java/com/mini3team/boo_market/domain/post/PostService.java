@@ -52,11 +52,13 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostListResponse> getPostList(String category, String sort, Pageable pageable) {
+    public Page<PostListResponse> getPostList(String category, String sort, Integer majorId, Pageable pageable) {
         Page<Post> posts;
 
         if (category == null || category.equals("전체")) {
             posts = postRepository.findAll(pageable);
+        } else if (majorId != null) {
+            posts = postRepository.findByCategory_NameAndMajor_Id(category, majorId, pageable);
         } else {
             posts = postRepository.findByCategory_Name(category, pageable);
         }

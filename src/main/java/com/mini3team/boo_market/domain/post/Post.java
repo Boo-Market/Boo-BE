@@ -1,6 +1,7 @@
 package com.mini3team.boo_market.domain.post;
 
 import com.mini3team.boo_market.domain.category.Category;
+import com.mini3team.boo_market.domain.user.Major;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
@@ -29,6 +30,10 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "major_id")
+    private Major major;
 
     // 대여 전용
     private String startDate;
