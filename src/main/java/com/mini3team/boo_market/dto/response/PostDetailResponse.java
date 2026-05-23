@@ -22,6 +22,7 @@ public class PostDetailResponse {
     private Long authorId;
     private boolean isWished;
     private LocalDateTime createdAt;
+    private int viewCount;
 
     // 대여 전용
     private String startDate;
@@ -43,6 +44,7 @@ public class PostDetailResponse {
         this.authorId = post.getAuthorId();
         this.isWished = post.isWished();
         this.createdAt = post.getCreatedAt();
+        this.viewCount = post.getViewCount();
         this.startDate = post.getStartDate();
         this.endDate = post.getEndDate();
         this.lenderName = post.getLenderName();
