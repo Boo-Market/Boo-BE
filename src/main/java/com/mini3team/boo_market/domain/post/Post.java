@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -34,6 +35,10 @@ public class Post {
     private String endDate;
     private String lenderName;
     private String borrowerName;
+
+    private Long authorId;
+    private boolean isWished;
+    private LocalDateTime createdAt;
 
     @Builder
     public Post(String title, Category category, int itemCondition,
