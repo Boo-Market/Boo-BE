@@ -3,10 +3,10 @@ package com.mini3team.boo_market.domain.post;
 import com.mini3team.boo_market.domain.category.Category;
 import com.mini3team.boo_market.domain.category.CategoryRepository;
 import com.mini3team.boo_market.dto.request.PostCreateRequest;
+import com.mini3team.boo_market.dto.response.PostDetailResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.mini3team.boo_market.dto.response.PostDetailResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +40,7 @@ public class PostService {
 
         return postRepository.save(post).getId();
     }
+
     @Transactional(readOnly = true)
     public PostDetailResponse getPost(Long postId) {
         Post post = postRepository.findById(postId)

@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -34,9 +35,11 @@ public class Post {
     private String endDate;
     private String lenderName;
     private String borrowerName;
+
     private Long authorId;
     private boolean isWished;
     private LocalDateTime createdAt;
+
     @Builder
     public Post(String title, Category category, int itemCondition,
                 int price, boolean isFree, String tradeLocation,
