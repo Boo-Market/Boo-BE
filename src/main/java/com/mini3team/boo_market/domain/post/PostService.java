@@ -2,6 +2,7 @@ package com.mini3team.boo_market.domain.post;
 
 import com.mini3team.boo_market.domain.category.Category;
 import com.mini3team.boo_market.domain.category.CategoryRepository;
+import com.mini3team.boo_market.domain.wish.WishRepository;
 import com.mini3team.boo_market.dto.request.PostCreateRequest;
 import com.mini3team.boo_market.dto.response.PostDetailResponse;
 import com.mini3team.boo_market.dto.response.PostListResponse;
@@ -18,8 +19,9 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
+    private final WishRepository wishRepository;
 
-    public Long createPost(PostCreateRequest request) {
+    public Long createPost(PostCreateRequest request, Long authorId) {
         request.validateRental();
 
         Category category = categoryRepository.findById(request.getCategoryId())
@@ -35,6 +37,7 @@ public class PostService {
                 .contactMethod(request.getContactMethod())
                 .description(request.getDescription())
                 .imageUrls(request.getImageUrls())
+                .authorId(authorId)
                 .startDate(request.getStartDate())
                 .endDate(request.getEndDate())
                 .lenderName(request.getLenderName())
@@ -44,11 +47,12 @@ public class PostService {
         return postRepository.save(post).getId();
     }
 
-    public PostDetailResponse getPost(Long postId) {
+    public PostDetailResponse getPost(Long postId, Long userId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
         post.incrementViewCount();
-        return new PostDetailResponse(post);
+        boolean isWished = userId != null && wishRepository.existsByUserIdAndPostId(userId, postId);
+        return new PostDetailResponse(post, isWished);
     }
 
     @Transactional(readOnly = true)

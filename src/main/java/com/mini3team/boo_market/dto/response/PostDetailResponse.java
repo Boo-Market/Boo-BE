@@ -30,7 +30,7 @@ public class PostDetailResponse {
     private String lenderName;
     private String borrowerName;
 
-    public PostDetailResponse(Post post) {
+    public PostDetailResponse(Post post, boolean isWished) {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.category = post.getCategory().getName();
@@ -42,7 +42,7 @@ public class PostDetailResponse {
         this.description = post.getDescription();
         this.images = post.getImageUrls();
         this.authorId = post.getAuthorId();
-        this.isWished = post.isWished();
+        this.isWished = isWished;
         this.createdAt = post.getCreatedAt();
         this.viewCount = post.getViewCount();
         this.startDate = post.getStartDate();

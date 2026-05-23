@@ -42,7 +42,6 @@ public class Post {
     private String borrowerName;
 
     private Long authorId;
-    private boolean isWished;
     private LocalDateTime createdAt;
 
     @Column(columnDefinition = "VARCHAR(20) DEFAULT 'AVAILABLE'")
@@ -69,7 +68,8 @@ public class Post {
     public Post(String title, Category category, int itemCondition,
                 int price, boolean isFree, String tradeLocation,
                 String contactMethod, String description,
-                List<String> imageUrls, String startDate, String endDate,
+                List<String> imageUrls, Long authorId,
+                String startDate, String endDate,
                 String lenderName, String borrowerName) {
         this.title = title;
         this.category = category;
@@ -80,6 +80,7 @@ public class Post {
         this.contactMethod = contactMethod;
         this.description = description;
         this.imageUrls = imageUrls;
+        this.authorId = authorId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.lenderName = lenderName;
