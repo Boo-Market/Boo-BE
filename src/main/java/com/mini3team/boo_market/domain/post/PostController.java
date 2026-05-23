@@ -2,7 +2,12 @@ package com.mini3team.boo_market.domain.post;
 
 import com.mini3team.boo_market.dto.request.PostCreateRequest;
 import com.mini3team.boo_market.dto.response.PostDetailResponse;
+import com.mini3team.boo_market.dto.response.PostListResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
@@ -29,6 +34,29 @@ public class PostController {
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "data", response
+        ));
+    }
+
+    @GetMapping("/api/posts")
+    public ResponseEntity<?> getPostList(
+            @RequestParam(required = false, defaultValue = "전체") String category,
+            @RequestParam(required = false, defaultValue = "latest") String sort,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Sort sorting;
+        if (sort.equals("low_price")) {
+            sorting = Sort.by("price").ascending();
+        } else {
+            sorting = Sort.by("id").descending();
+        }
+
+        Pageable pageable = PageRequest.of(page, size, sorting);
+        Page<PostListResponse> response = postService.getPostList(category, sort, pageable);
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "data", Map.of("posts", response.getContent())
         ));
     }
 }
