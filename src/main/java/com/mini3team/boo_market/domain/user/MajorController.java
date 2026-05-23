@@ -1,23 +1,26 @@
 package com.mini3team.boo_market.domain.user;
 
+import com.mini3team.boo_market.common.response.DataResponse;
+import com.mini3team.boo_market.dto.response.MajorResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/majors")
 public class MajorController {
-
     private final MajorRepository majorRepository;
 
-    @GetMapping("/api/majors")
-    public ResponseEntity<?> getMajors() {
-        List<Major> majors = majorRepository.findAll();
-        return ResponseEntity.ok(Map.of(
-                "data", majors
-        ));
+    @GetMapping
+    public DataResponse<List<MajorResponse>> findMajors() {
+        return new DataResponse<>(
+                majorRepository.findAll().stream()
+                        .map(major -> new MajorResponse(major.getId(), major.getName()))
+                        .toList()
+        );
     }
 }

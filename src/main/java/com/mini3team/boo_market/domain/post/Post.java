@@ -1,12 +1,13 @@
 package com.mini3team.boo_market.domain.post;
 
 import com.mini3team.boo_market.domain.category.Category;
+import com.mini3team.boo_market.domain.user.Major;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
-import com.mini3team.boo_market.domain.user.Major;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -30,17 +31,20 @@ public class Post {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "major_id")
+    private Major major;
+
     // 대여 전용
     private String startDate;
     private String endDate;
     private String lenderName;
     private String borrowerName;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "major_id")
-    private Major major;
+
     private Long authorId;
     private boolean isWished;
     private LocalDateTime createdAt;
+
     @Builder
     public Post(String title, Category category, int itemCondition,
                 int price, boolean isFree, String tradeLocation,
