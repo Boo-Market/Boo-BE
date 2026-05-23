@@ -45,11 +45,24 @@ public class Post {
     private boolean isWished;
     private LocalDateTime createdAt;
 
+    @Column(columnDefinition = "VARCHAR(20) DEFAULT 'AVAILABLE'")
+    private String status;
+
     @Column(columnDefinition = "INT DEFAULT 0")
     private int viewCount;
 
     public void incrementViewCount() {
         this.viewCount++;
+    }
+
+    public void update(String title, String status, Integer price, String tradeLocation,
+                       String description, Integer itemCondition) {
+        if (title != null) this.title = title;
+        if (status != null) this.status = status;
+        if (price != null) this.price = price;
+        if (tradeLocation != null) this.tradeLocation = tradeLocation;
+        if (description != null) this.description = description;
+        if (itemCondition != null) this.itemCondition = itemCondition;
     }
 
     @Builder
@@ -71,5 +84,7 @@ public class Post {
         this.endDate = endDate;
         this.lenderName = lenderName;
         this.borrowerName = borrowerName;
+        this.status = "AVAILABLE";
+        this.createdAt = LocalDateTime.now();
     }
 }

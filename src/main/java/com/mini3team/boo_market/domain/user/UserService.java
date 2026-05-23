@@ -1,13 +1,11 @@
 package com.mini3team.boo_market.domain.user;
 
 import com.mini3team.boo_market.common.exception.ApiException;
-import com.mini3team.boo_market.domain.goods.Goods;
-import com.mini3team.boo_market.domain.goods.GoodsRepository;
 import com.mini3team.boo_market.domain.post.Post;
 import com.mini3team.boo_market.domain.post.PostRepository;
 import com.mini3team.boo_market.domain.report.Report;
 import com.mini3team.boo_market.domain.report.ReportRepository;
-import com.mini3team.boo_market.domain.wishlist.WishListRepository;
+import com.mini3team.boo_market.domain.wish.WishRepository;
 import com.mini3team.boo_market.dto.request.GoodsUpdateRequest;
 import com.mini3team.boo_market.dto.request.ReportRequest;
 import com.mini3team.boo_market.dto.request.UserUpdateRequest;
@@ -27,9 +25,8 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final MajorRepository majorRepository;
-    private final GoodsRepository goodsRepository;
     private final PostRepository postRepository;
-    private final WishListRepository wishListRepository;
+    private final WishRepository wishRepository;
     private final ReportRepository reportRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -40,9 +37,9 @@ public class UserService {
                 user.getName(),
                 user.getNickname(),
                 new MyPageResponse.MajorInfo(user.getMajor().getId(), user.getMajor().getName()),
-                goodsRepository.countBySellerId(userId),
-                goodsRepository.countBySellerIdAndStatus(userId, "SOLD"),
-                wishListRepository.countByUserId(userId)
+                postRepository.countByAuthorId(userId),
+                postRepository.countByAuthorIdAndStatus(userId, "SOLD"),
+                wishRepository.countByUserId(userId)
         );
     }
 
@@ -67,32 +64,28 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public List<MyGoodsResponse> getMyGoods(Long userId) {
-        return goodsRepository.findBySellerIdOrderByCreatedAtDesc(userId).stream()
-                .map(goods -> new MyGoodsResponse(goods.getId(), goods.getTitle(), goods.getPrice(), null))
+        return postRepository.findByAuthorIdOrderByCreatedAtDesc(userId).stream()
+                .map(post -> new MyGoodsResponse(
+                        post.getId(),
+                        post.getTitle(),
+                        post.getPrice(),
+                        post.getImageUrls().isEmpty() ? null : post.getImageUrls().get(0)
+                ))
                 .toList();
     }
 
     public void updateGoods(Long userId, Long goodsId, GoodsUpdateRequest request) {
-        Goods goods = goodsRepository.findByIdAndSellerId(goodsId, userId)
+        Post post = postRepository.findByIdAndAuthorId(goodsId, userId)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "goods_id", "게시글을 찾을 수 없습니다."));
 
-        goods.update(
-                request.categoryId(),
-                request.title(),
-                request.type(),
-                request.status(),
-                request.price(),
-                request.rentalPeriod(),
-                request.place(),
-                request.description(),
-                request.condition()
-        );
+        post.update(request.title(), request.status(), request.price(),
+                request.place(), request.description(), request.condition());
     }
 
     public void deleteGoods(Long userId, Long goodsId) {
-        Goods goods = goodsRepository.findByIdAndSellerId(goodsId, userId)
+        Post post = postRepository.findByIdAndAuthorId(goodsId, userId)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "goods_id", "게시글을 찾을 수 없습니다."));
-        goodsRepository.delete(goods);
+        postRepository.delete(post);
     }
 
     public void report(Long reporterId, ReportRequest request) {
