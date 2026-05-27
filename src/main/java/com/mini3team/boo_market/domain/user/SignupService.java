@@ -19,8 +19,15 @@ public class SignupService {
     private final MajorRepository majorRepository;
     private final EmailVerificationRepository emailVerificationRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     public void signup(SignupRequest request) {
+        if (!request.email().endsWith("@hufs.ac.kr")) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "email", "한국외대 글로벌캠퍼스 이메일(@hufs.ac.kr)만 가입 가능합니다.");
+        }
+        if (userRepository.existsByEmail(request.email())) {
+            throw new ApiException(HttpStatus.CONFLICT, "email", "이미 사용 중인 이메일입니다.");
+        }
         if (!request.password().equals(request.password2())) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "password", "비밀번호가 일치하지 않습니다.");
         }
@@ -29,6 +36,13 @@ public class SignupService {
         }
         if (!Boolean.TRUE.equals(request.isAgreed())) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "is_agreed", "개인정보 처리방침에 동의해야 회원가입이 가능합니다.");
+        }
+
+        EmailVerification verification = emailVerificationRepository
+                .findTopByEmailOrderByCreatedAtDesc(request.email())
+                .orElseThrow(() -> new ApiException(HttpStatus.BAD_REQUEST, "email", "이메일 인증이 필요합니다."));
+        if (!Boolean.TRUE.equals(verification.getIsVerified())) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "email", "이메일 인증이 완료되지 않았습니다.");
         }
 
         Major major = majorRepository.findById(request.majorId())
@@ -45,10 +59,12 @@ public class SignupService {
     }
 
     public void sendEmail(String email) {
-        if (!userRepository.existsByEmail(email)) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "email", "존재하지 않는 이메일입니다.");
+        if (!email.endsWith("@hufs.ac.kr")) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "email", "한국외대 글로벌캠퍼스 이메일(@hufs.ac.kr)만 가입 가능합니다.");
         }
-        emailVerificationRepository.save(new EmailVerification(email, createCode()));
+        String code = createCode();
+        emailVerificationRepository.save(new EmailVerification(email, code));
+        mailService.sendVerificationEmail(email, code);
     }
 
     public void verifyEmail(EmailVerifyRequest request) {
@@ -60,7 +76,6 @@ public class SignupService {
         }
 
         verification.verify();
-        userRepository.findByEmail(request.email()).ifPresent(User::verifyEmail);
     }
 
     private String createCode() {
