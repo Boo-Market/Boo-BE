@@ -18,12 +18,15 @@ public class PasswordResetService {
     private final UserRepository userRepository;
     private final EmailVerificationRepository emailVerificationRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     public void sendPasswordResetEmail(PasswordEmailSendRequest request) {
         if (!userRepository.existsByEmail(request.email())) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "email", "가입되지 않은 이메일입니다.");
         }
-        emailVerificationRepository.save(new EmailVerification(request.email(), createCode()));
+        String code = createCode();
+        emailVerificationRepository.save(new EmailVerification(request.email(), code));
+        mailService.sendVerificationEmail(request.email(), code);
     }
 
     public void resetPassword(PasswordResetRequest request) {
