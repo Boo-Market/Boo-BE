@@ -5,8 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "major")
 public class Major {
@@ -15,4 +17,9 @@ public class Major {
 
     @Column(nullable = false)
     private String name;
+
+    public Major(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
