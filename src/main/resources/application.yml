@@ -1,20 +1,6 @@
 spring:
   application:
     name: boo-mackt
-  mail:
-    host: smtp.gmail.com
-    port: 465
-    username: boomarket03@gmail.com
-    password: ${MAIL_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          ssl:
-            enable: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/boo_market?serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
     username: ${SPRING_DATASOURCE_USERNAME:root}
@@ -31,3 +17,6 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET:boo-market-secret-key-must-be-longer-than-32-bytes}
+
+sendgrid:
+  api-key: ${SENDGRID_API_KEY}
