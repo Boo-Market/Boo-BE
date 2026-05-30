@@ -20,65 +20,67 @@ public class MajorDataInitializer implements ApplicationRunner {
         if (majorRepository.count() > 0) return;
 
         majorRepository.saveAll(List.of(
-                // 영어대학
-                new Major(1, "영미문학·문화학부"),
-                new Major(2, "ELLT학과"),
-                new Major(3, "LD학부"),
+                // 인문대학
+                new Major(1, "철학과"),
+                new Major(2, "사학과"),
+                new Major(3, "언어인지과학과"),
 
-                // 사범대학
-                new Major(4, "영어교육과"),
+                // 국가전략언어대학
+                new Major(4, "폴란드학과"),
+                new Major(5, "루마니아학과"),
+                new Major(6, "체코·슬로바키아학과"),
+                new Major(7, "헝가리학과"),
+                new Major(8, "세르비아·크로아티아학과"),
+                new Major(9, "그리스·불가리아학과"),
+                new Major(10, "중앙아시아학과"),
+                new Major(11, "아프리카학부"),
+                new Major(12, "우크라이나학과"),
+                new Major(13, "한국학과"),
 
                 // 경상대학
-                new Major(5, "국제경제학과"),
-                new Major(6, "GBT학부"),
-                new Major(7, "국제금융학과"),
-
-                // 사회과학대학
-                new Major(8, "행정학과"),
-                new Major(9, "미디어커뮤니케이션학부"),
-                new Major(10, "국제학부"),
+                new Major(14, "Global Business & Technology학부"),
+                new Major(15, "국제금융학과"),
 
                 // 자연과학대학
-                new Major(11, "수학과"),
-                new Major(12, "통계학과"),
-                new Major(13, "전자물리학과"),
-                new Major(14, "화학과"),
+                new Major(16, "수학과"),
+                new Major(17, "통계학과"),
+                new Major(18, "전자물리학과"),
+                new Major(19, "환경학과"),
+                new Major(20, "생명공학과"),
+                new Major(21, "화학과"),
 
                 // 공과대학
-                new Major(15, "컴퓨터공학부"),
-                new Major(16, "산업경영공학부"),
-                new Major(17, "기계전자공학부"),
-                new Major(18, "바이오메디컬공학부"),
+                new Major(22, "컴퓨터공학부"),
+                new Major(23, "정보통신공학과"),
+                new Major(24, "반도체전자공학부(반도체공학전공)"),
+                new Major(25, "반도체전자공학부(전자공학전공)"),
+                new Major(26, "산업경영공학과"),
 
-                // 인문대학
-                new Major(19, "철학과"),
-                new Major(20, "역사문화학부"),
-                new Major(21, "언어인지과학과"),
+                // 융합인재대학
+                new Major(27, "융합인재학부"),
 
-                // 법과대학
-                new Major(22, "법학부"),
+                // Culture & Technology융합대학
+                new Major(28, "디지털콘텐츠학부"),
+                new Major(29, "투어리즘 & 웰니스학부"),
+                new Major(30, "글로벌스포츠산업학부"),
 
-                // 국제지역대학 - 서양학부
-                new Major(23, "서양학부(영어권)"),
-                new Major(24, "서양학부(프랑스어권)"),
-                new Major(25, "서양학부(독일어권)"),
-                new Major(26, "서양학부(러시아어권)"),
+                // AI융합대학
+                new Major(31, "AI데이터융합학부"),
+                new Major(32, "Finance & AI융합학부"),
 
-                // 국제지역대학 - 동양학부
-                new Major(27, "동양학부(일본어전공)"),
-                new Major(28, "동양학부(중국어전공)"),
-                new Major(29, "동양학부(말레이인도네시아어전공)"),
-                new Major(30, "동양학부(태국어전공)"),
-                new Major(31, "동양학부(아랍어전공)"),
-                new Major(32, "동양학부(한국학전공)"),
+                // 독립학부
+                new Major(33, "바이오메디컬공학부"),
+                new Major(34, "기후변화융합학부"),
+                new Major(35, "자유전공학부(글로벌)"),
 
-                // 국제지역대학 - 기타
-                new Major(33, "동유럽발칸학부"),
-                new Major(34, "중앙아시아학부"),
-                new Major(35, "아프리카학부"),
-                new Major(36, "중동외교학과"),
-                new Major(37, "브라질학과"),
-                new Major(38, "아르헨티나학과")
+                // 계열·단과대학 통합모집
+                new Major(36, "인문대학[통합모집]"),
+                new Major(37, "국가전략언어계열"),
+                new Major(38, "경상대학[통합모집]"),
+                new Major(39, "자연과학대학[통합모집]"),
+                new Major(40, "공과계열"),
+                new Major(41, "Culture & Technology융합대학[통합모집]"),
+                new Major(42, "AI융합대학[통합모집]")
         ));
     }
 }
