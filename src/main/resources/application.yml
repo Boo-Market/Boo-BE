@@ -3,14 +3,14 @@ spring:
     name: boo-mackt
   mail:
     host: smtp.gmail.com
-    port: 587
+    port: 465
     username: boomarket03@gmail.com
     password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
           auth: true
-          starttls:
+          ssl:
             enable: true
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/boo_market?serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
