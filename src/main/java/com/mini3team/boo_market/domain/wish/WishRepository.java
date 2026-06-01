@@ -11,4 +11,5 @@ public interface WishRepository extends JpaRepository<Wish, Long> {
     List<Wish> findAllByUserId(Long userId);
     long countByUserId(Long userId);
     long countByPostId(Long postId);
+    void deleteAllByUserId(Long userId);
 }

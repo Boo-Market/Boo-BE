@@ -1,6 +1,9 @@
 package com.mini3team.boo_market.domain.user;
 
 import com.mini3team.boo_market.common.exception.ApiException;
+import com.mini3team.boo_market.domain.chat.ChatMessageRepository;
+import com.mini3team.boo_market.domain.chat.ChatRoom;
+import com.mini3team.boo_market.domain.chat.ChatRoomRepository;
 import com.mini3team.boo_market.domain.post.Post;
 import com.mini3team.boo_market.domain.post.PostRepository;
 import com.mini3team.boo_market.domain.report.Report;
@@ -28,6 +31,8 @@ public class UserService {
     private final PostRepository postRepository;
     private final WishRepository wishRepository;
     private final ReportRepository reportRepository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
@@ -98,7 +103,16 @@ public class UserService {
     }
 
     public void withdraw(Long userId) {
-        getUser(userId).withdraw();
+        User user = getUser(userId);
+        List<ChatRoom> chatRooms = chatRoomRepository.findAllByUserId(userId);
+        if (!chatRooms.isEmpty()) {
+            chatMessageRepository.deleteAllByChatRoomIn(chatRooms);
+            chatRoomRepository.deleteAll(chatRooms);
+        }
+        reportRepository.deleteAllByReporter(user);
+        reportRepository.deleteAllByTargetUser(user);
+        wishRepository.deleteAllByUserId(userId);
+        userRepository.delete(user);
     }
 
     private User getUser(Long userId) {
