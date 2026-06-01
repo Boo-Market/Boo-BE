@@ -4,6 +4,7 @@ import com.mini3team.boo_market.domain.category.Category;
 import com.mini3team.boo_market.domain.user.Major;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
@@ -25,9 +26,10 @@ public class Post {
     private String description;
 
     @ElementCollection
+    @BatchSize(size = 100)
     private List<String> imageUrls = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
 
