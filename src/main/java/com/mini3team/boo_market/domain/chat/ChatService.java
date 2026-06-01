@@ -6,7 +6,9 @@ import com.mini3team.boo_market.domain.user.User;
 import com.mini3team.boo_market.domain.user.UserRepository;
 import com.mini3team.boo_market.dto.response.ChatMessageResponse;
 import com.mini3team.boo_market.dto.response.ChatRoomResponse;
+import com.mini3team.boo_market.common.exception.ApiException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,9 @@ public class ChatService {
                 .orElseGet(() -> {
                     Post post = postRepository.findById(postId)
                             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+                    if (buyerId.equals(post.getAuthorId())) {
+                        throw new ApiException(HttpStatus.BAD_REQUEST, "chat", "본인 게시글에는 채팅할 수 없습니다.");
+                    }
                     User buyer = userRepository.findById(buyerId)
                             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
                     User seller = userRepository.findById(post.getAuthorId())
