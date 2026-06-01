@@ -1,5 +1,7 @@
 package com.mini3team.boo_market.common.config;
 
+import com.mini3team.boo_market.domain.category.Category;
+import com.mini3team.boo_market.domain.category.CategoryRepository;
 import com.mini3team.boo_market.domain.user.Major;
 import com.mini3team.boo_market.domain.user.MajorRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +16,21 @@ import java.util.List;
 public class MajorDataInitializer implements ApplicationRunner {
 
     private final MajorRepository majorRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public void run(ApplicationArguments args) {
+        if (categoryRepository.count() == 0) {
+            categoryRepository.saveAll(List.of(
+                    new Category(1L, "전공책"),
+                    new Category(2L, "교양책"),
+                    new Category(3L, "생활용품"),
+                    new Category(4L, "분실물"),
+                    new Category(5L, "대여"),
+                    new Category(6L, "기타")
+            ));
+        }
+
         if (majorRepository.count() > 0) return;
 
         majorRepository.saveAll(List.of(

@@ -19,4 +19,4 @@ jwt:
   secret: ${JWT_SECRET:boo-market-secret-key-must-be-longer-than-32-bytes}
 
 sendgrid:
-  api-key: ${SENDGRID_API_KEY}
+  api-key: ${SENDGRID_API_KEY:}
