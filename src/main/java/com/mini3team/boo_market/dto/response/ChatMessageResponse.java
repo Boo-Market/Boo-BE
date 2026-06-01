@@ -1,5 +1,6 @@
 package com.mini3team.boo_market.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini3team.boo_market.domain.chat.ChatMessage;
 import lombok.Getter;
 
@@ -11,6 +12,7 @@ public class ChatMessageResponse {
     private final Long senderId;
     private final String senderNickname;
     private final String message;
+    @JsonProperty("isRead")
     private final boolean isRead;
     private final LocalDateTime createdAt;
 
