@@ -52,8 +52,19 @@ public class Post {
     @Column(columnDefinition = "INT DEFAULT 0")
     private int viewCount;
 
+    @Column(columnDefinition = "INT DEFAULT 0")
+    private int wishCount;
+
     public void incrementViewCount() {
         this.viewCount++;
+    }
+
+    public void incrementWishCount() {
+        this.wishCount++;
+    }
+
+    public void decrementWishCount() {
+        if (this.wishCount > 0) this.wishCount--;
     }
 
     public void update(String title, String status, Integer price, String tradeLocation,

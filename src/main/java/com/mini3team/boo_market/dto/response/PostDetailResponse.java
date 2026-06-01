@@ -31,7 +31,7 @@ public class PostDetailResponse {
     private String lenderName;
     private String borrowerName;
 
-    public PostDetailResponse(Post post, boolean isWished, long wishCount) {
+    public PostDetailResponse(Post post, boolean isWished) {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.category = post.getCategory().getName();
@@ -44,7 +44,7 @@ public class PostDetailResponse {
         this.images = post.getImageUrls();
         this.authorId = post.getAuthorId();
         this.isWished = isWished;
-        this.wishCount = wishCount;
+        this.wishCount = post.getWishCount();
         this.createdAt = post.getCreatedAt();
         this.viewCount = post.getViewCount();
         this.startDate = post.getStartDate();

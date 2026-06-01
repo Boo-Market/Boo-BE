@@ -32,12 +32,14 @@ public class WishService {
         }
 
         wishRepository.save(Wish.builder().userId(userId).post(post).build());
+        post.incrementWishCount();
     }
 
     public void removeWish(Long postId, Long userId) {
         Wish wish = wishRepository.findByUserIdAndPostId(userId, postId)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "wish", "관심상품으로 등록되지 않은 게시글입니다."));
         wishRepository.delete(wish);
+        wish.getPost().decrementWishCount();
     }
 
     @Transactional(readOnly = true)

@@ -52,8 +52,7 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
         post.incrementViewCount();
         boolean isWished = userId != null && wishRepository.existsByUserIdAndPostId(userId, postId);
-        long wishCount = wishRepository.countByPostId(postId);
-        return new PostDetailResponse(post, isWished, wishCount);
+        return new PostDetailResponse(post, isWished);
     }
 
     @Transactional(readOnly = true)

@@ -12,6 +12,7 @@ public class PostListResponse {
     private int price;
     private boolean isFree;
     private String thumbnailUrl;
+    private int wishCount;
 
     public PostListResponse(Post post) {
         this.postId = post.getId();
@@ -22,5 +23,6 @@ public class PostListResponse {
         this.thumbnailUrl = post.getImageUrls().isEmpty()
                 ? null
                 : post.getImageUrls().get(0);
+        this.wishCount = post.getWishCount();
     }
 }
